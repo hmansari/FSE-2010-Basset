@@ -1,0 +1,157 @@
+#!/bin/bash
+
+# This script runs Basset for predefined subjects.  This script allows 
+# Basset and JPF options to be easily changed when running different
+# tests on a particular subject. New subjects can be added below.
+
+if [ $# -lt 2 ] ; then
+    echo ""
+    echo "Usage: basset <language> <subject> [<subject-arg>..] [<jpf-or-basset-option>..]"
+    echo ""
+#JPF Usage: java [<vm-option>..] gov.nasa.jpf.JPF [<jpf-option>..] [<app> [<app-arg>..]]
+#  <jpf-option> : -help  : print usage information
+#               | -log   : print configuration initialization steps
+#               | -show  : print configuration dictionary contents
+#               | +<key>=<value>  : add or override key/value pair to config dictionary
+#  <app>        : *.jpf application properties file pathname | fully qualified application class name
+#  <app-arg>    : arguments passed into main() method of application class
+    echo "available basset options:"
+    echo "  +basset.time_limit         (default=2147483647)"
+    echo "  +basset.tracestats         (default=false)"
+    echo "  +basset.explorationstats   (default=true)"
+    echo "  +basset.randomseed         (default=0)"
+    echo ""
+    echo "  +basset.dpor               (default=0)  0=None"
+    echo "                                      1=Dcute"
+    echo "                                      2=Dcute+Earliest"
+    echo "                                      3=Persistent"
+    echo "                                      4=Persistent+Earliest"
+    echo "                                      5=Transistent"
+    echo "                                      10=Persistent+Sleep"
+    echo "                                      11=Transistent+Sleep"
+    echo ""
+    echo "  +basset.dpor_heuristic     (default=0)  0=none (none is equivalent to queue (FIFO)"
+    echo "                                      1=low_receiver_id (ECA)  2=high_receiver_id (LCA)"
+    echo "                                      3=queue (FIFO)  4=stack (LIFO)  5=random (RAND)"
+    echo "                                      6=low_receiver_enabled_message_count (LEM)"
+    echo "                                      7=high_receiver_enabled_message_count (HEM)"
+    echo "                                      8=high_receiver_message_send_average (HMS)"
+    echo "                                      9=send_graph_reachability (SGR)"
+    echo ""
+    exit
+fi
+
+LANGUAGE=${1}   # first argument  : actor language - "scala" or "foundry"
+SUBJECT=${2}    # second argument : test subject
+# subsequent arguments : subject arguments, basset options, and/or jpf options
+shift; shift
+
+#----------------------------------------------------------------
+function experiment_basset() {
+    CLASS=${1}
+    LANGUAGE=${2}
+    shift; shift
+
+    # Sort arguments for JPF so that target and target arguments are at the end
+    OPTIONS=
+    SUBJECTARGS=
+    while [ $# -gt 0 ]; do
+        arg=${1}
+        if [ ${arg:0:1} == "+" ] || [ ${arg:0:1} == "-" ] ; then
+            OPTIONS="${OPTIONS} ${arg}"
+        else
+            SUBJECTARGS="${SUBJECTARGS} ${arg}"
+        fi
+        shift
+    done
+
+    #OPTIONS="${OPTIONS} +site=./standalone.properties"
+
+    echo "====== RUNNING subject=${SUBJECT} language=${LANGUAGE}"
+    time bin/jpf +classpath=.:build/tests +basset.language=${LANGUAGE} ${OPTIONS} \
+    gov.nasa.jpf.actor.Basset ${CLASS} ${SUBJECTARGS}
+}
+
+#----------------------------------------------------------------
+(
+if [ "${LANGUAGE}" != "scala" ] && [ "${LANGUAGE}" != "foundry" ] ; then
+    echo "language '${LANGUAGE}' is not valid - specify 'scala' or 'foundry'"
+    exit    
+
+############################### FOUNDRY SUBJECTS ###############################
+elif [ "${LANGUAGE}" == "foundry" ] ; then
+
+	case ${SUBJECT} in
+
+        fib) CLASS="fibonacci.Driver" ;;
+        mergesort) CLASS="mergesort.Driver" ;;
+        pi) CLASS="pi.Driver" ;;
+        pipesort) CLASS="pipesort.Driver" ;;
+        quicksort) CLASS="quicksort.Driver" ;;
+        server) CLASS="server.Driver" ;;
+        shortestpath) CLASS="shortestpath.Driver" ;;
+
+        test1) CLASS="gov.nasa.jpf.test.actor.foundrytests.test1.Driver" ;;
+        test2) CLASS="gov.nasa.jpf.test.actor.foundrytests.test2.Driver" ;;
+        test3) CLASS="gov.nasa.jpf.test.actor.foundrytests.test3.Driver" ;;
+        test4) CLASS="gov.nasa.jpf.test.actor.foundrytests.test4.Driver" ;;
+
+        *)  echo "subject '${SUBJECT}' is not valid for language '${LANGUAGE}'"
+            printf "\n"
+            exit
+            ;;
+    esac
+
+############################### SCALA SUBJECTS ###############################
+elif [ "${LANGUAGE}" == "scala" ] ; then
+
+	case ${SUBJECT} in
+
+        helloworld) CLASS="scalaexamples.HelloWorld" ;;
+        fib) CLASS="scalaexamples.fibonacci.Fibo" ;;
+        leader) CLASS="scalaexamples.dcute.Leader" ;;
+        mergesort) CLASS="scalaexamples.mergesort.MergeSortCopy" ;;
+        pi) CLASS="scalaexamples.pi.Pi" ;;
+        server) CLASS="scalaexamples.clientserver.ClientServer" ;;
+        shortestpath) CLASS="scalaexamples.dcute.ShortestPath" ;;
+        spinsort) CLASS="scalaexamples.dcute.SpinSort" ;;
+
+        test1) CLASS="scalatests.semantic.Ex1_NoActing" ;;
+        test2) CLASS="scalatests.semantic.Ex2_NoActing" ;;
+        test3) CLASS="scalatests.semantic.Ex3_React" ;;
+        test4) CLASS="scalatests.semantic.Ex4_React" ;;
+        test5) CLASS="scalatests.semantic.Ex5_Receive"  ;;
+        test6) CLASS="scalatests.semantic.Ex6_Receive" ;;
+        test7) CLASS="scalatests.semantic.Ex7_ReactWithin" ;;
+        test8) CLASS="scalatests.semantic.Ex8_ReactWithin"  ;;
+        test9) CLASS="scalatests.semantic.Ex9_ReceiveWithin" ;;
+        test10) CLASS="scalatests.semantic.Ex10_ReceiveWithin" ;;     
+        test11) CLASS="scalatests.semantic.Ex11_SynchCall" ;;
+        test12) CLASS="scalatests.semantic.Ex12_Forward" ;;
+        test13) CLASS="scalatests.semantic.Ex13_Loop" ;;
+        test14) CLASS="scalatests.semantic.Ex14_Loop" ;;
+        test15) CLASS="scalatests.semantic.Ex15_Loop" ;;
+        test16) CLASS="scalatests.semantic.Ex16_SynchCall" ;;
+        test17) CLASS="scalatests.semantic.Ex17_TimedSynchCall" ;;
+        test18) CLASS="scalatests.semantic.Ex18_SendBang" ;;
+        test19) CLASS="scalatests.semantic.Ex19_SendForward" ;;
+        test20) CLASS="scalatests.semantic.Ex20_SendCustomer" ;;
+        test21) CLASS="scalatests.semantic.Ex21_Receiver" ;;
+        test22) CLASS="scalatests.semantic.Ex22_LoopWhile" ;;
+        test100) CLASS="scalatests.semantic.Ex100_Link" ;;
+        test101) CLASS="scalatests.semantic.Ex101_LinkTrapExit" ;;
+        test200) CLASS="scalatests.semantic.Ex200_TakeMsg" ;;
+        test201) CLASS="scalatests.semantic.Ex201_MailboxSize" ;;
+        deadlock0) CLASS="scalatests.deadlock.Ex0_TwoActorsDeadlocked" ;;
+        deadlock1) CLASS="scalatests.deadlock.Ex1_Classic" ;;
+        deadlock2) CLASS="scalatests.deadlock.Ex2_ForgottenReply" ;;
+
+        *)  echo "subject '${SUBJECT}' is not valid for language '${LANGUAGE}'"
+            printf "\n"
+            exit
+            ;;
+    esac
+
+fi
+experiment_basset $CLASS $LANGUAGE "$@"
+) 2>&1 

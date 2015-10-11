@@ -1,0 +1,57 @@
+
+                            Basset README
+                            =============
+
+Basset is a tool and framework that allows users to systematically test
+actor programs that compile to Java bytecode. Basset is an extension 
+for the Java PathFinder model checker developed by NASA Ames. Basset 
+can currently check actor programs written in the Scala programming 
+language or the ActorFoundry library for Java.
+
+
+Running Basset
+==============
+To run basset:
+bin/jpf +basset.language=foundry gov.nasa.jpf.actor.Basset pi.Driver 3
+
+To see a complete list of Basset options, omit the subject driver and subject 
+arguments:
+bin/jpf +basset.language=foundry gov.nasa.jpf.actor.Basset
+
+Alternatively, the test driver for pi can be run using .jpf files (if they exist):
+bin/jpf src/examples/pi.jpf
+
+
+The Basset Project
+==================
+Basset was originally developed at the University of Illinois at 
+Urbana-Champaign.
+
+For more information about Basset and related publications see
+http://mir.cs.illinois.edu/basset/
+
+
+Acknowledgments
+===============
+This material is based upon work partially supported by the National 
+Science Foundation under Grant Nos. CCF-0916893, CNS-0851957, 
+CCF-0746856, CNS-0615372, and CNS-0509321.
+
+
+Copyright Disclosure
+====================
+The Basset software is distributed under the NASA Open Source Agreement
+(NOSA), version 1.3. See the NOSA-1.3-JPF file for details. 
+
+This software also contains third-party source code and libraries that
+are required to run Basset. These files are covered by their respective
+licenses:
+
+- lib/foundry-1.0.jar and several source files in src/classes/osl are
+  part of the ActorFoundry distribution (http://osl.cs.uiuc.edu/af).
+  See the LICENSE-ACTORFOUNDRY file for licensing details. 
+
+- Several source files in scala-src/classes/scala are part of the Scala
+  distribution (http://www.scala-lang.org/).
+  See the LICENSE-SCALA file for licensing details.
+

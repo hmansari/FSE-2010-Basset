@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<test>
+  <subject>examples.core.semantic.Ex1_NoActing</subject>
+
+    <case>
+      <!--Yielding Little steps NoComp-->
+      <result>ok</result>
+      <options>
+        <jpf>
+          <storage/>
+        </jpf>
+        <framework>
+          <language>scala</language>
+          <threadyield>true</threadyield>
+        </framework>
+      </options>
+        
+      <output>
+        <states>4</states>
+        <depth>3</depth>
+        <traces>1</traces>
+        <messages>
+          <undelivered>0</undelivered>
+          <delivered>0</delivered>
+        </messages>
+        <actors>    
+          <created>2</created>
+          <destroyed>0</destroyed>
+          <terminated>2</terminated>
+        </actors>
+      </output>
+    </case>
+
+</test>

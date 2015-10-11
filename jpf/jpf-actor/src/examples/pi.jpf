@@ -1,0 +1,5 @@
+target = gov.nasa.jpf.actor.Basset
+
+target_args = pi.Driver,3
+
+basset.language = foundry
