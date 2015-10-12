@@ -28,7 +28,6 @@ import gov.nasa.jpf.util.Misc;
 import gov.nasa.jpf.util.Predicate;
 import gov.nasa.jpf.vm.choice.BreakGenerator;
 
-
 /**
  * @author Nastaran Shafiei <nastaran.shafiei@gmail.com>
  * 
