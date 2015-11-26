@@ -1,0 +1,42 @@
+*****************
+Installation
+*****************
+
+1. Download the latest version of the Java PathFinder core (jpf-core) from the JPF website (http://babelfish.arc.nasa.gov/trac/jpf/wiki/install/start). You should choose to download and build JPF from the Mercurial source repository; the provided binary snapshots are for an older version of jpf-core that is not compatible with Basset. The following instructions assume that you will use default directory locations when installing JPF.
+
+mkdir ~/projects/jpf
+cd ~/projects/jpf
+hg clone http://babelfish.arc.nasa.gov/hg/jpf/jpf-core
+
+2. Download the latest version of the Basset extension (jpf-actor) from the JPF source repository.
+
+cd ~/projects/jpf
+hg clone http://babelfish.arc.nasa.gov/hg/jpf/jpf-actor
+
+3. Make sure to create a JPF site.properties file in your ~/.jpf directory as directed in the jpf-core installation instructions. Add the location of the jpf-actor extension to this file. If you have not previously used JPF, your site.properties file should look something like:
+
+jpf.home = ${user.home}/projects/jpf
+jpf-core = ${jpf.home}/jpf-core
+jpf-actor = ${jpf.home}/jpf-actor
+...
+extensions=${jpf-core}
+
+4. If you wish to use Basset's Scala language support, you will need to download two Scala archive files (the compiler and the runtime library) into Basset's lib directory. Basset was tested to work with at least version 2.7.3.
+
+cd ~/projects/jpf/jpf-actor/lib
+wget http://mir.cs.illinois.edu/basset/scala-compiler-2.7.3.jar
+wget http://mir.cs.illinois.edu/basset/scala-library-2.7.3.jar
+
+5. Build the projects:
+Use ant to build the jpf-core and jpf-actor projects. 
+
+cd ~/projects/jpf/jpf-core
+bin/ant
+# ... lots of output, at the end you should see something like:
+# BUILD SUCCESSFUL
+cd ~/projects/jpf/jpf-actor
+bin/ant
+# ... lots of output, at the end you should see something like:
+# BUILD SUCCESSFUL
+
+
