@@ -1,4 +1,4 @@
-###Please follow these steps to spin up a virtual machine for MDSheet using vagrant script:
+###Please follow these steps to spin up a virtual machine for Basset using vagrant script:
 1. Download and Install [Vagrant](https://www.vagrantup.com/downloads.html) on the host machine.
 2. Download and Install [Virtual Box](https://www.virtualbox.org/wiki/Downloads) on the host machine.
 3. Download the [Vagrantfile]() from [build-vm](https://github.com/hmansari/FSE-2010-Basset/tree/master/build-vm) directory to your machine.
