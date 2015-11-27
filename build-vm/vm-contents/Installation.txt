@@ -21,13 +21,7 @@ jpf-actor = ${jpf.home}/jpf-actor
 ...
 extensions=${jpf-core}
 
-4. If you wish to use Basset's Scala language support, you will need to download two Scala archive files (the compiler and the runtime library) into Basset's lib directory. Basset was tested to work with at least version 2.7.3.
-
-cd ~/projects/jpf/jpf-actor/lib
-wget http://mir.cs.illinois.edu/basset/scala-compiler-2.7.3.jar
-wget http://mir.cs.illinois.edu/basset/scala-library-2.7.3.jar
-
-5. Build the projects:
+4. Build the projects:
 Use ant to build the jpf-core and jpf-actor projects. 
 
 cd ~/projects/jpf/jpf-core
