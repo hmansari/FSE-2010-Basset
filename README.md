@@ -8,7 +8,6 @@ The tool was originally presented in this [Paper](http://dl.acm.org/citation.cfm
 This repository _is not_ the original repository for this tool. Here are some links to the original project:
 
 + [The Official Project Page, including source code](http://mir.cs.illinois.edu/basset/)
-+ [The Official Tool Download Page](http://mir.cs.illinois.edu/basset/)
 
 In this repository, for Basset you will find:
 
